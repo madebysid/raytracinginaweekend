@@ -28,7 +28,6 @@ where
         let mut closest_hit = None;
         let mut closest_t_so_far = t_max;
         for entity in &self.entities {
-            let hit = entity.hit(ray, t_min, closest_t_so_far);
             if let Some(hit) = entity.hit(ray, t_min, closest_t_so_far) {
                 closest_t_so_far = hit.t;
                 closest_hit = Some(hit);

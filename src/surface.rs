@@ -1,5 +1,3 @@
-use std::cmp::Ordering;
-
 use crate::{ray::Ray, vec3::Vec3};
 
 #[derive(Debug, Clone, Copy)]
@@ -18,24 +16,6 @@ impl Hit {
             t,
             point: hit_point,
             normal,
-        }
-    }
-}
-
-impl PartialEq for Hit {
-    fn eq(&self, other: &Self) -> bool {
-        self.t == other.t
-    }
-}
-
-impl PartialOrd for Hit {
-    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
-        if self.t < other.t {
-            Some(Ordering::Less)
-        } else if self.t > other.t {
-            Some(Ordering::Greater)
-        } else {
-            Some(Ordering::Equal)
         }
     }
 }

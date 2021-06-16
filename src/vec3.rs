@@ -1,6 +1,6 @@
 use std::{
     fmt::{Display, Formatter},
-    ops::{Add, Mul, Sub},
+    ops::{Add, Div, Mul, Sub},
 };
 
 #[derive(Debug, Clone, Copy)]
@@ -98,24 +98,12 @@ impl Mul<Vec3> for f32 {
     }
 }
 
-/// usize * Vec3
-impl Mul<usize> for Vec3 {
-    type Output = Self;
-
-    fn mul(self, rhs: usize) -> Self::Output {
-        Vec3(
-            self.0 * rhs as f32,
-            self.1 * rhs as f32,
-            self.2 * rhs as f32,
-        )
-    }
-}
-/// Vec3 * usize
-impl Mul<Vec3> for usize {
+/// Vec3 / f32
+impl Div<f32> for Vec3 {
     type Output = Vec3;
 
-    fn mul(self, rhs: Vec3) -> Self::Output {
-        rhs * self
+    fn div(self, rhs: f32) -> Self::Output {
+        Vec3::new(self.0 / rhs, self.1 / rhs, self.2 / rhs)
     }
 }
 

@@ -6,9 +6,8 @@ use std::{
 use crate::vec3::Vec3;
 
 pub struct P3 {
-    pub width: usize,
-    pub height: usize,
-    pub aspect_ratio: f32,
+    width: usize,
+    height: usize,
     texels: Vec<Vec3>, // row-major texels
 }
 
@@ -20,7 +19,6 @@ impl P3 {
         Self {
             width,
             height,
-            aspect_ratio: width as f32 / height as f32,
             texels,
         }
     }
