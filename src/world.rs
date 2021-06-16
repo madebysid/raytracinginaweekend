@@ -1,6 +1,6 @@
 use std::f32::INFINITY;
 
-use crate::{ray::Ray, surface::HitSurface, vec3::Vec3};
+use crate::{ray::Ray, sphere::Sphere, surface::HitSurface, vec3::Vec3};
 
 pub struct World<T>
 where
@@ -43,14 +43,22 @@ where
     T: HitSurface,
 {
     pub fn texel_color(&self, ray: Ray) -> Vec3 {
-        if let Some(hit) = self.hit(ray, 0.0, INFINITY) {
-            // Color normal depending on direction. First move the normal to be between 0 & 1, then use those values as r,g,b
-            let normal = Vec3::new(
-                0.5 * (hit.normal.x() + 1.0),
-                0.5 * (hit.normal.y() + 1.0),
-                0.5 * (hit.normal.z() + 1.0),
-            );
-            return normal;
+        // For a pixel that a ray from the camera hits, its color is the color of the entity the ray hits NEXT (after reflection). For different materials, the reflection strategy is different.
+        // This can continue recursively; the color of the entity the reflected ray hits is the color of the entity the reflected reflected ray hits.
+        // This continues until the ray does not hit anything.
+
+        // For matte materials, we assume the ray is reflected in a random direction. The contribution of the reflected ray is also significantly reduced.
+        // We'll treat all entities in this world as matte materials.
+
+        if let Some(hit) = self.hit(ray, 0.001, INFINITY) {
+            // For randomness, we'll say that the ray gets reflected to a random point (S) of a unit sphere that is tangeant to the hitpoint (P).
+            // Our entity's surface normal (N) points to this unit sphere's center. Also our normals are unit length, so they point exactly at this center
+            // The center of such a sphere then is P + N. (look at last diagram on page 22 of book)
+            // The random point in this unit sphere (from ITS center) is S. So the target pixel is P + N + S.
+            // The ray to this target pixel starts at P, and has the direction (P + N + S) - P
+
+            let target_pixel = hit.point + hit.normal + Sphere::random_point_in_unit_sphere();
+            return 0.5 * self.texel_color(Ray::new(hit.point, target_pixel - hit.point));
         }
 
         // If there are no hits, then render the sky (background), which will be a linear gradient from blue to white

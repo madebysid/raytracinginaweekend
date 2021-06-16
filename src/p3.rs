@@ -5,6 +5,8 @@ use std::{
 
 use crate::vec3::Vec3;
 
+const GAMMA: f32 = 2.2;
+
 pub struct P3 {
     width: usize,
     height: usize,
@@ -47,9 +49,9 @@ impl Display for P3 {
                 write!(
                     f,
                     "{} {} {} ",
-                    (color.r() * 255.0).ceil(),
-                    (color.g() * 255.0).ceil(),
-                    (color.b() * 255.0).ceil()
+                    (color.r().powf(1.0 / GAMMA) * 255.0).ceil(),
+                    (color.g().powf(1.0 / GAMMA) * 255.0).ceil(),
+                    (color.b().powf(1.0 / GAMMA) * 255.0).ceil()
                 )?;
             }
 

@@ -1,3 +1,5 @@
+use rand::random;
+
 use crate::{
     surface::{Hit, HitSurface},
     vec3::{dot, Vec3},
@@ -11,6 +13,22 @@ pub struct Sphere {
 impl Sphere {
     pub fn new(center: Vec3, radius: f32) -> Self {
         Self { center, radius }
+    }
+
+    /// Returns a random point within a unit sphere centered at the origin
+    pub fn random_point_in_unit_sphere() -> Vec3 {
+        let mut point;
+        loop {
+            point = Vec3::new(random::<f32>(), random::<f32>(), random::<f32>()); // 0 < x,y,z < 1
+            point = 2.0 * point - Vec3::new(1.0, 1.0, 1.0); // -1 < x,y,z < 1
+
+            // Inside unit sphere -> distance from unit sphere's center < 1
+            if point.squared_length() < 1.0 {
+                break;
+            }
+        }
+
+        point
     }
 }
 

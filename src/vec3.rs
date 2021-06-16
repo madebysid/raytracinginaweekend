@@ -42,6 +42,10 @@ impl Vec3 {
         (self.0 * self.0 + self.1 * self.1 + self.2 * self.2).sqrt()
     }
 
+    pub fn squared_length(&self) -> f32 {
+        self.0 * self.0 + self.1 * self.1 + self.2 * self.2
+    }
+
     /// Returns another vector in the same direction, but with 0 < magnitude < 1
     pub fn as_unit(&self) -> Vec3 {
         let length = self.length();

@@ -16,7 +16,7 @@ use crate::{camera::Camera, vec3::Vec3, world::World};
 fn main() {
     let width = 480;
     let height = 270;
-    let aa_samples = 10;
+    let aa_samples = 8;
     let mut image = P3::new(width, height);
 
     // Hello World!
@@ -42,7 +42,7 @@ fn main() {
         for y in 0..height {
             let mut total_color = Vec3::new(0.0, 0.0, 00.);
             // Samples per pixel
-            for s in 0..aa_samples {
+            for _ in 0..aa_samples {
                 // Texture coordinates. 0 < u,v < 1
                 let u = (x as f32 + random::<f32>()) / width as f32;
                 let v = (y as f32 + random::<f32>()) / height as f32;
